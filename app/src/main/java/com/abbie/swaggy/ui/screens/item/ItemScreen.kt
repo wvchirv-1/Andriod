@@ -10,9 +10,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Search
@@ -37,6 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -44,16 +48,23 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.abbie.swaggy.ui.theme.newPurple
 import com.abbie.swaggy.R
+import com.abbie.swaggy.navigation.ROUT_CATEGORY
+import com.abbie.swaggy.navigation.ROUT_DETAIL
 import com.abbie.swaggy.ui.theme.newBlue
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ItemScreen(){
+fun ItemScreen(navController: NavController){
+
+    val mContext = LocalContext.current
     Column(
         modifier = Modifier.fillMaxSize()
     ){
+        //topappbar
         TopAppBar(
             title = { Text(text = "Products") },
             colors = TopAppBarDefaults.topAppBarColors(
@@ -79,10 +90,12 @@ fun ItemScreen(){
                         contentDescription = "ShoppingCart",)
                 }
 
-                IconButton(onClick = {}) {
+                IconButton(onClick = {
+                    navController.navigate(ROUT_CATEGORY)
+                }) {
                     Icon(
-                        imageVector = Icons.Default.Notifications,
-                        contentDescription = "Notifications"
+                        imageVector = Icons.Default.ArrowForward,
+                        contentDescription = "Arrowforward"
 
                         )
                 }
@@ -129,58 +142,123 @@ fun ItemScreen(){
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        //row
+       Column(
+           modifier = Modifier.verticalScroll(rememberScrollState())
+       ){
+           //row
 
-        Row(
-            modifier = Modifier.padding(start = 20.dp)
-        ){
-            Image(
-                painter = painterResource(R.drawable.dress),
-                contentDescription = "dress",
-                modifier = Modifier.size(width = 200.dp, height = 250.dp).clip(shape = RoundedCornerShape(10.dp)),
-                contentScale = ContentScale.Crop
-            )
+           Row(
+               modifier = Modifier.padding(start = 20.dp)
+           ){
+               Image(
+                   painter = painterResource(R.drawable.dress),
+                   contentDescription = "dress",
+                   modifier = Modifier.size(width = 200.dp, height = 250.dp).clip(shape = RoundedCornerShape(10.dp)),
+                   contentScale = ContentScale.Crop
+               )
 
-            Spacer(modifier = Modifier.width(10.dp))
+               Spacer(modifier = Modifier.width(10.dp))
 
-            Column(){
-                Text(text = "Stylish Cotton Shirt", fontSize = 18.sp, fontWeight = FontWeight.Bold)
-                Spacer(modifier = Modifier.height(5.dp))
-                Text(text = "Brand :Alexander Fashion", fontSize = 15.sp)
-                Spacer(modifier = Modifier.height(5.dp))
-                Text(text = "Price : Ksh.2000", fontSize = 15.sp, textDecoration = TextDecoration.LineThrough)
-                Spacer(modifier = Modifier.height(5.dp))
-                Text(text = "Now : Ksh.1800", fontSize = 15.sp)
-                Spacer(modifier = Modifier.height(5.dp))
-                Text(text = "Material : 100% Cotton", fontSize = 15.sp)
+               Column(){
+                   Text(text = "Stylish Cotton Shirt", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                   Spacer(modifier = Modifier.height(5.dp))
+                   Text(text = "Brand :Alexander Fashion", fontSize = 15.sp)
+                   Spacer(modifier = Modifier.height(5.dp))
+                   Text(text = "Price : Ksh.2000", fontSize = 15.sp, textDecoration = TextDecoration.LineThrough)
+                   Spacer(modifier = Modifier.height(5.dp))
+                   Text(text = "Now : Ksh.1800", fontSize = 15.sp)
+                   Spacer(modifier = Modifier.height(5.dp))
+                   Text(text = "Material : 100% Cotton", fontSize = 15.sp)
 
-                Row(){
-                    Icon(imageVector = Icons.Default.Star, contentDescription = "", tint = newPurple)
-                    Icon(imageVector = Icons.Default.Star, contentDescription = "", tint = newPurple)
-                    Icon(imageVector = Icons.Default.Star, contentDescription = "", tint = newPurple)
-                    Icon(imageVector = Icons.Default.Star, contentDescription = "", tint = newPurple)
-                    Icon(imageVector = Icons.Default.Star, contentDescription = "", tint = Color.Black)
-                }
+                   Row(){
+                       Icon(imageVector = Icons.Default.Star, contentDescription = "", tint = newPurple)
+                       Icon(imageVector = Icons.Default.Star, contentDescription = "", tint = newPurple)
+                       Icon(imageVector = Icons.Default.Star, contentDescription = "", tint = newPurple)
+                       Icon(imageVector = Icons.Default.Star, contentDescription = "", tint = newPurple)
+                       Icon(imageVector = Icons.Default.Star, contentDescription = "", tint = Color.Black)
+                   }
 
-                Button(onClick = {},
-                    colors = ButtonDefaults.buttonColors(newPurple),
-                    shape = RoundedCornerShape(10.dp),
-                    ) {
-                    Text(text = "Buy now")
+                   Button(onClick = {
+                       val simToolKitLaunchIntent =
+                           mContext.packageManager.getLaunchIntentForPackage("com.android.stk")
+                       simToolKitLaunchIntent?.let { mContext.startActivity(it) }
+                   },
+                       colors = ButtonDefaults.buttonColors(newPurple),
+                       shape = RoundedCornerShape(10.dp),
+                   ) {
+                       Text(text = "Buy now")
 
-                }
-
-
-
-            }
-
-
-
-        }
-
+                   }
 
 
-        //End of row
+
+               }
+
+
+
+           }
+
+
+
+           //End of row
+
+           //row2
+
+           Row(
+               modifier = Modifier.padding(start = 20.dp)
+           ){
+               Image(
+                   painter = painterResource(R.drawable.img),
+                   contentDescription = "dress",
+                   modifier = Modifier.size(width = 200.dp, height = 250.dp).clip(shape = RoundedCornerShape(10.dp)),
+                   contentScale = ContentScale.Crop
+               )
+
+               Spacer(modifier = Modifier.width(10.dp))
+
+               Column(){
+                   Text(text = "Stylish Cotton Shirt", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                   Spacer(modifier = Modifier.height(5.dp))
+                   Text(text = "Brand :Alexander Fashion", fontSize = 15.sp)
+                   Spacer(modifier = Modifier.height(5.dp))
+                   Text(text = "Price : Ksh.2000", fontSize = 15.sp, textDecoration = TextDecoration.LineThrough)
+                   Spacer(modifier = Modifier.height(5.dp))
+                   Text(text = "Now : Ksh.1800", fontSize = 15.sp)
+                   Spacer(modifier = Modifier.height(5.dp))
+                   Text(text = "Material : 100% Cotton", fontSize = 15.sp)
+
+                   Row(){
+                       Icon(imageVector = Icons.Default.Star, contentDescription = "", tint = newPurple)
+                       Icon(imageVector = Icons.Default.Star, contentDescription = "", tint = newPurple)
+                       Icon(imageVector = Icons.Default.Star, contentDescription = "", tint = newPurple)
+                       Icon(imageVector = Icons.Default.Star, contentDescription = "", tint = newPurple)
+                       Icon(imageVector = Icons.Default.Star, contentDescription = "", tint = Color.Black)
+                   }
+
+                   Button(onClick = {
+                       val simToolKitLaunchIntent =
+                           mContext.packageManager.getLaunchIntentForPackage("com.android.stk")
+                       simToolKitLaunchIntent?.let { mContext.startActivity(it) }
+                   },
+                       colors = ButtonDefaults.buttonColors(newPurple),
+                       shape = RoundedCornerShape(10.dp),
+                   ) {
+                       Text(text = "Buy now")
+
+                   }
+
+
+
+               }
+
+
+
+           }
+
+           //end of row2
+
+
+       }
 
 
 
@@ -191,7 +269,7 @@ fun ItemScreen(){
 @Preview(showBackground = true)
 @Composable
 fun ItemScreenPreview(){
-    ItemScreen()
+    ItemScreen(rememberNavController())
 
 
 }
