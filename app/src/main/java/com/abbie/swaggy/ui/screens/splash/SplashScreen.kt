@@ -27,6 +27,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.abbie.swaggy.R
 import com.abbie.swaggy.navigation.ROUT_HOME
+import com.abbie.swaggy.navigation.ROUT_LOGIN
 import com.abbie.swaggy.navigation.ROUT_SPLASH
 import com.abbie.swaggy.ui.theme.newBlue
 import com.airbnb.lottie.compose.LottieAnimation
@@ -44,7 +45,7 @@ fun SplashScreen(navController: NavController){
    val coroutine = rememberCoroutineScope()
     coroutine.launch{
         delay(2000)
-        navController.navigate(ROUT_HOME)
+        navController.navigate(ROUT_LOGIN)
     }
 
     Column(
